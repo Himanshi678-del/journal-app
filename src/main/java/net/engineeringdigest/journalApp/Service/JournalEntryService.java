@@ -20,37 +20,51 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
-    public List<JournalEntry> getAll(){
+    public List<JournalEntry> getAll() {
         return journalEntryRepo.findAll();
     }
 
     @Transactional
-    public void saveEntry(JournalEntry journalEntry, String userName){
+    public void saveEntry(JournalEntry journalEntry, String userName) {
         try {
             User user = userService.findByUserName(userName);
             JournalEntry saved = journalEntryRepo.save(journalEntry);
             user.getJournalEntries().add(saved);
 //            user.setUserName(null);
-            userService.saveEntry(user);
-        }catch (Exception e){
+            userService.saveUser(user);
+        } catch (Exception e) {
             System.out.println(e);
-            throw new RuntimeException("An Error Occurred !",e);
+            throw new RuntimeException("An Error Occurred !", e);
         }
     }
-    public void saveEntry(JournalEntry journalEntry){
+
+    public void saveEntry(JournalEntry journalEntry) {
         journalEntryRepo.save(journalEntry);
     }
 
-    public Optional<JournalEntry> findById(ObjectId id){
-       return journalEntryRepo.findById(id);
-    }
-
-    public void DeleteById(ObjectId id,String userName){
-        User user = userService.findByUserName(userName);
-//        user.getJournalEntries().removeIf(x->x.getId().equals(id));
-        userService.saveEntry(user);
-        journalEntryRepo.deleteById(id);
+    public Optional<JournalEntry> findById(ObjectId id) {
+        return journalEntryRepo.findById(id);
     }
 
 
+   @Transactional
+   public boolean DeleteById(ObjectId id, String userName) {
+        boolean removed=false;
+        try {
+            User user = userService.findByUserName(userName);
+             removed = user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+            if (removed) {
+                userService.saveUser(user);
+                journalEntryRepo.deleteById(id);
+            }
+        }catch (Exception e){
+            System.out.println(e);
+            throw new RuntimeException("error occurred ", e);
+        }
+        return removed;
+    }
+
+//    public List<JournalEntry> findByUserName(String userName) {
+//
+//    }
 }
