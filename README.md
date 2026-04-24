@@ -27,6 +27,14 @@ It allows users to create, manage, and secure their personal journal entries.
 
 ---
 
+## 🔐 Authentication
+
+This project uses Spring Security with Basic Authentication.
+
+To access secured APIs, include Authorization header:
+
+Authorization: Basic <base64(username:password)>
+
 ## 📂 Project Structure
 
 * Controller → Handles API requests
@@ -64,13 +72,16 @@ cd journal-app
 
 ### User APIs
 
-* GET /user
-* POST /user
+* PUT /user
+* DELETE /user
 
 ### Journal APIs
 
 * GET /journal
 * POST /journal
+* GET/journal/id{myId}
+* DELETE/journal/id{myId}
+* PUT/journal/id{myId}
 
 ---
 
