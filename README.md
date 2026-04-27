@@ -24,6 +24,7 @@ It allows users to create, manage, and secure their personal journal entries.
 * Create, update, delete journal entries
 * User-specific journal management
 * RESTful API design
+* Role-Based Authentication
 
 ---
 
@@ -82,6 +83,11 @@ cd journal-app
 * GET/journal/id{myId}
 * DELETE/journal/id{myId}
 * PUT/journal/id{myId}
+
+## Admin APIs
+* GET/admin/all-users
+* POST/admin/create-admin-user
+
 
 ---
 
