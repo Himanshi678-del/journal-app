@@ -25,6 +25,7 @@ It allows users to create, manage, and secure their personal journal entries.
 * User-specific journal management
 * RESTful API design
 * Role-Based Authentication
+* Passed test case using Junit
 
 ---
 
