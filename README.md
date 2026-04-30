@@ -37,6 +37,10 @@ To access secured APIs, include Authorization header:
 
 Authorization: Basic <base64(username:password)>
 
+## Testing
+- Basic unit testing using JUnit and Mockito
+- Created sample test cases with mocked dependencies
+
 ## 📂 Project Structure
 
 * Controller → Handles API requests
