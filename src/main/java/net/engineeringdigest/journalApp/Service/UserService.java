@@ -1,5 +1,6 @@
 package net.engineeringdigest.journalApp.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.Repository.UserRepo;
 import org.bson.types.ObjectId;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -25,9 +27,14 @@ public class UserService {
     }
 
     public void saveNewUser(User user){
+        try{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER"));
         userRepo.save(user);
+        }catch (Exception e){
+            log.error("error for {} :",user.getUserName(),e);
+        }
+
     }
 
     public void saveAdmin(User user){
