@@ -34,6 +34,8 @@ public class RedisService {
             ObjectMapper objectMapper=new ObjectMapper();
             String jsonValue = objectMapper.writeValueAsString(o);
             redisTemplate.opsForValue().set(key,jsonValue,ttl, TimeUnit.SECONDS);
+            Long expire = redisTemplate.getExpire(key);
+            System.out.println(expire);
         } catch (Exception e) {
             log.error("Exception ", e);
         }

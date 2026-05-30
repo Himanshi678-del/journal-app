@@ -44,7 +44,7 @@ public class UserController {
        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping
+    @GetMapping("/weather-api")
     public ResponseEntity<?> greetings(){
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         WeatherResponse weatherResponse = weatherService.getWeather("Mumbai");
