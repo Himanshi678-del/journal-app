@@ -1,6 +1,7 @@
 package net.engineeringdigest.journalApp.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import net.engineeringdigest.journalApp.DTOs.UserDTO;
 import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.Repository.UserRepo;
 import org.bson.types.ObjectId;
@@ -21,30 +22,41 @@ public class UserService {
     private UserRepo userRepo;
 
     private final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+    private User mapToUser(UserDTO dto){
+        User user = new User();
+        user.setUserName(dto.getUserName());
+        user.setEmail(dto.getEmail());
+        user.setSentimentAnalysis(dto.isSentimentAnalysis());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        return user;
+    }
 
     public List<User> getAll(){
         return userRepo.findAll();
     }
 
-    public void saveNewUser(User user){
-        try{
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER"));
-        userRepo.save(user);
-        }catch (Exception e){
-            log.error("error for {} :",user.getUserName(),e);
+    public void saveNewUser(UserDTO userDTO) {
+        try {
+            User user = mapToUser(userDTO);
+            user.setRoles(Arrays.asList("USER"));
+            userRepo.save(user);
+
+        } catch (Exception e) {
+            log.error("error for {} :", userDTO.getUserName(), e);
+        }
+    }
+
+        public void saveAdmin(UserDTO userDTO){
+
+            User user = mapToUser(userDTO);
+            user.setRoles(Arrays.asList("ADMIN","USER"));
+            userRepo.save(user);
         }
 
-    }
-
-    public void saveAdmin(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER","ADMIN"));
-        userRepo.save(user);
-    }
 
     public void saveUser(User user){
         userRepo.save(user);
+
     }
 
     public Optional<User> findById(ObjectId id){

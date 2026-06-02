@@ -1,6 +1,8 @@
 package net.engineeringdigest.journalApp.Controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.engineeringdigest.journalApp.Cache.AppCache;
+import net.engineeringdigest.journalApp.DTOs.UserDTO;
 import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name="Admin APIs")
 public class AdminController {
 
     @Autowired
@@ -32,7 +35,7 @@ public class AdminController {
     }
 
     @PostMapping("/create-admin-user")
-    public void createAdmin(@RequestBody User user){
+    public void createAdmin(@RequestBody UserDTO user){
         userService.saveAdmin(user);
     }
 

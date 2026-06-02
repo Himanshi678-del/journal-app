@@ -1,5 +1,7 @@
 package net.engineeringdigest.journalApp.Controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import net.engineeringdigest.journalApp.DTOs.UserDTO;
 import net.engineeringdigest.journalApp.Entity.User;
 import net.engineeringdigest.journalApp.Repository.UserRepo;
 import net.engineeringdigest.journalApp.Service.UserService;
@@ -10,11 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@Tag(name="User APIs",description = "read , update & delete users")
 public class UserController {
+    private final PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+
     @Autowired
     private UserService userService;
 
@@ -26,13 +33,13 @@ public class UserController {
 
 
    @PutMapping
-   public ResponseEntity<?> updateUser(@RequestBody User user){
+   public ResponseEntity<?> updateUser(@RequestBody UserDTO user){
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
        String userName = authentication.getName();
        User userInDb = userService.findByUserName(userName);
             userInDb.setUserName(user.getUserName());
-            userInDb.setPassword(user.getPassword());
-            userService.saveNewUser(userInDb);
+            userInDb.setPassword(passwordEncoder.encode(user.getPassword()));
+            userService.saveUser(userInDb);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
