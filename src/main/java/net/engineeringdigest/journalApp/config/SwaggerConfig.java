@@ -21,7 +21,7 @@ public class SwaggerConfig {
                 .description("By Himanshi Mandrai")
                 )
                 .servers(Arrays.asList(new Server().url("http://localhost:8080/journal").description("local"),
-                        new Server().url("http://localhost:8081").description("live")))
+                        new Server().url("https://journal-app-production-60f2.up.railway.app/journal").description("live")))
                 .tags(Arrays.asList(new Tag().name("Public APIs"),
                         new Tag().name("User APIs"),
                         new Tag().name("JournalEntry APIs"),
